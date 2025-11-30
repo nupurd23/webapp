@@ -40,3 +40,16 @@ pipeline {
         }
     }
 }
+stage('SonarQube Analysis') {
+    steps {
+        withSonarQubeEnv('SonarQube') {
+            sh """
+                mvn clean verify sonar:sonar \
+                -Dsonar.projectKey=webapp \
+                -Dsonar.host.url=http://localhost:9000 \
+                -Dsonar.login=$SONARQUBE_AUTH_TOKEN
+            """
+        }
+    }
+}
+

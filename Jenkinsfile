@@ -1,55 +1,29 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven' // if Maven installed
+    }
+
     stages {
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
-                git url: 'https://github.com/nupurd23/webapp.git', branch: 'develop'
+                git 'https://github.com/<yourname>/<yourrepo>.git'
             }
         }
 
-        stage('Build Project') {
+        stage('SonarQube Analysis') {
             steps {
-                echo 'Building the Web Application...'
-                // example build command:
-                // sh 'mvn -DskipTests clean package'
+                withSonarQubeEnv('SonarQube') {
+                    sh """
+                        mvn clean verify sonar:sonar \
+                        -Dsonar.projectKey=webapp \
+                        -Dsonar.projectName=WebAppProject \
+                        -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.login=$SONARQUBE_AUTH_TOKEN
+                    """
+                }
             }
-        }
-
-        stage('Test Project') {
-            steps {
-                echo 'Running tests...'
-                // example test command:
-                // sh 'mvn test'
-            }
-        }
-
-        stage('Deploy Project') {
-            steps {
-                echo 'Deploying application...'
-            }
-        }
-    }
-
-    post {
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed!'
         }
     }
 }
-stage('SonarQube Analysis') {
-    steps {
-        withSonarQubeEnv('SonarQube') {
-            sh """
-                mvn clean verify sonar:sonar \
-                -Dsonar.projectKey=webapp \
-                -Dsonar.host.url=http://localhost:9000 \
-                -Dsonar.login=$SONARQUBE_AUTH_TOKEN
-            """
-        }
-    }
-}
-

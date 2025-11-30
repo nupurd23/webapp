@@ -12,7 +12,7 @@ pipeline {
             steps {
                 withSonarQubeEnv('SonarQube') {
                     bat """
-                        mvn clean verify sonar:sonar ^
+                        "C:\\apache-maven-3.9.9\\bin\\mvn.cmd" clean verify sonar:sonar ^
                         -Dsonar.projectKey=webapp ^
                         -Dsonar.host.url=http://localhost:9000
                     """

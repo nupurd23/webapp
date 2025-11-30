@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git url: 'https://github.com/nupurd23/webapp.git', branch: 'master'
+                git url: 'https://github.com/nupurd23/webapp.git', branch: 'main'
             }
         }
 

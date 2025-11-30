@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/<yourname>/<yourrepo>.git'
+                git 'https://github.com/nupurd23/webapp.git'
             }
         }
 
